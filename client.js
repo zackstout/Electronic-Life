@@ -50,13 +50,19 @@ class Grid {
     // Here's an issue: we're only getting cases where x ==y!:
     // console.log(v);
   }
+
+  // ahhhh, we need this for World.turn() to work:
+  forEach(f, context) {
+    for (var y = 0; y < this.h; y++) {
+      for (var x = 0; x < this.w; x++) {
+        var value = this.space[x + y * this.w];
+        if (value != null) {
+          f.call(context, value, new Vector(x, y));
+        }
+      }
+    }
+  }
 }
-
-
-// var grid = new Grid(5, 5);
-// console.log(grid.get(new Vector(1,1)));
-// grid.set(new Vector(1, 1), "X");
-// console.log(grid.get(new Vector(1,1)));
 
 // Interesting that classes aren't hoisted, so this has to go below:
 var directions = {
@@ -69,7 +75,6 @@ var directions = {
   "w":  new Vector(-1,  0),
   "nw": new Vector(-1, -1)
 };
-
 
 function randomElement(array) {
   return array[Math.floor(Math.random() * array.length)];
@@ -92,10 +97,7 @@ class BouncingCritter {
 }
 
 function elemFromChar(legend, ch) {
-  // so we are getting plenty of empty spaces..:
-  // console.log(ch);
   if (ch == " ") {
-    // console.log('hi');
     return null;
   }
   var element = new legend[ch]();
@@ -104,8 +106,6 @@ function elemFromChar(legend, ch) {
 }
 
 function charFromElement(el) {
-  // why is el alwys #??
-  // console.log(el);
   if (el == null) {
     return " ";
   } else {
@@ -119,28 +119,19 @@ class World {
     var grid = new Grid(map[0].length, map.length);
     this.grid = grid;
     this.legend = legend;
-    // not an issue with the arrow function...:
 
     // There's actually good reason we don't use this.grid. Could use var self = this as a workaround, but ES6 fixes it. .bind() is another workaround. Finally, can use an optional second context parameter for map and forEach:
-    map.forEach(function(line, y) {
+    map.forEach((line, y) => {
       // console.log(y);
       for (var x=0; x < line.length; x++) {
-        // Ok so it's getting the x,, but not setting it:
-        // console.log(x);
-        // thought maybe we needed a this here...Nope:
         var vector = new Vector(x, y);
         grid.set(vector, elemFromChar(legend, line[x]));
-        // console.log(vector);
-
-        // plenty of nulls here:
-        // console.log(elemFromChar(legend, line[x]));
       }
     });
 
   }
 
   toString() {
-    // console.log(this.grid);
     var output = "";
     for (var y=0; y < this.grid.h; y++) {
       for (var x=0; x < this.grid.w; x++) {
@@ -150,6 +141,43 @@ class World {
       output += "\n";
     }
     return output;
+  }
+
+  turn() {
+    var acted = [];
+    console.log(this.grid);
+    // this will be the tricky one to change to arrow:
+    this.grid.forEach(function(critter, vector) {
+      if (critter.act && acted.indexOf(critter) == -1) {
+        acted.push(critter);
+        this.letAct(critter, vector);
+      }
+    }, this);
+  }
+
+  // These two functions *aren't* part of external interface of object; they should only be accessed privately.
+  letAct(critter, vector) {
+    var action = critter.act(new View(this, vector));
+    if (action && action.type == 'move') {
+      // validate direction (so that e.g. critters could be programmed sloppily -- actions might not make sense):
+      var dest = this.checkDestination(action, vector);
+      if (dest && this.grid.get(dest) == null) {
+        // vacate the space:
+        this.grid.set(vector, null);
+        // add the critter to destination:
+        this.grid.set(dest, critter);
+      }
+    }
+  }
+
+  checkDestination(action, vector) {
+    // is this built in?
+    if (directions.hasOwnProperty(action.direction)) {
+      var dest = vector.plus(directions[action.direction]);
+      if (this.grid.isInside(dest)) {
+        return dest;
+      }
+    }
   }
 
 }
@@ -163,12 +191,50 @@ var world = new World(plan, {
 
 console.log(world.toString());
 
+class View {
+  constructor(world, v) {
+    this.world = world;
+    // when is this name used?
+    this.vector = v;
+  }
+
+  look(dir) {
+    // this is where the name is used!:
+    var target = this.vector.plus(directions[dir]);
+    if (this.world.grid.isInside(target)) {
+      return charFromElement(this.world.grid.get(target));
+    } else {
+      //pretend there's a wall even outside the world:
+      return "#";
+    }
+  }
+
+  findAll(ch) {
+    var found = [];
+    for (var dir in directions) {
+      if (this.look(dir) == ch) {
+        found.push(dir);
+      }
+    }
+    return found;
+  }
+
+  find(ch) {
+    var found = this.findAll(ch);
+    if (found.length == 0) {
+      return null;
+    }
+    return randomElement(found);
+  }
+}
 
 
 
 
-
-
+for (var i = 0; i < 5; i++) {
+  world.turn();
+  console.log(world.toString());
+}
 
 
 
