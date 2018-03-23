@@ -3,6 +3,9 @@
   <head>
     <meta charset="utf-8">
     <title>E-Life</title>
+
+    <script src="jquery.js" charset="utf-8"></script>
+
     <!-- Nice, it appears order doesn't matter, as long as they're all above client.js: -->
     <script src="Vector.js" charset="utf-8"></script>
     <script src="BouncingCritter.js" charset="utf-8"></script>
@@ -10,10 +13,16 @@
     <script src="View.js" charset="utf-8"></script>
     <script src="Grid.js" charset="utf-8"></script>
 
-    <script src="client.js" charset="utf-8"></script>
-
   </head>
   <body>
     <h1>Eloquent J Project</h1>
+
+    <div id="world">
+
+    </div>
+
+    <!-- Solution to problem with document.getElementById was we need script down here: -->
+    <script src="client.js" charset="utf-8"></script>
+
   </body>
 </html>

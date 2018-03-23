@@ -11,7 +11,7 @@ var plan = ["############################",
             "# o  #         o       ### #",
             "#    #                     #",
             "############################"];
-console.log(plan);
+// console.log(plan);
 
 // Interesting that classes aren't hoisted, so this has to go below:
 var directions = {
@@ -32,6 +32,7 @@ function randomElement(array) {
 // couldn't we use Object.keys? He answers: no guarantee about order.
 var directionNames = "n ne e se s sw w nw".split(" ");
 
+// It's interesting that these are hoisted into *all the other class modules*:
 function elemFromChar(legend, ch) {
   if (ch == " ") {
     return null;
@@ -57,15 +58,75 @@ var world = new World(plan, {
 });
 
 console.log(world.toString());
+var arr = world.toString().split('\n');
+console.log(arr);
+
+//
+// var body = document.getElementsByTagName('body')[0];
+// console.log(body);
+// body.innerHTML = '<ul><li>hi</li></ul>';
+
+// Bringing in jQuery for animation:
+$(document).ready(function() {
+
+  var body = $('body');
+
+  plan.forEach((str) => {
+    // Whitespace won't show up if we do this:
+    // body.append('<p>' + str + '</p>');
+    var output = '';
+    for (var i=0; i < str.length; i++) {
+      if (str[i] == ' ') {
+        // console.log('what');
+        output += '-';
+      }
+      output += str[i];
+    }
+
+    body.append('<p>' + output + '</p>');
+  });
+
+  setInterval(moveWorld, 1000);
+
+  // for (var i = 0; i < 5; i++) {
+  //   world.turn();
+  //   // console.log(world.toString());
+  // }
+});
+
+// var worldArray = world.toString();
 
 
-for (var i = 0; i < 5; i++) {
+function moveWorld() {
   world.turn();
-  console.log(world.toString());
+  // should just make global:
+  var body = $('body');
+
+  // Hmm i wonder why .innerHTML didn't work...OH Because it's a jquery element!
+  body.empty();
+
+  var arr = world.toString().split('\n');
+
+  arr.forEach((str) => {
+    // Whitespace won't show up if we do this:
+    // body.append('<p>' + str + '</p>');
+    var output = '';
+    for (var i=0; i < str.length; i++) {
+      if (str[i] == ' ') {
+        // console.log('what');
+        output += '-';
+      }
+      output += str[i];
+    }
+
+    body.append('<p>' + output + '</p>');
+
+  // console.log(world.toString());
+
+  });
+
+
 }
-
-
-
 
 
 

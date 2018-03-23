@@ -31,7 +31,7 @@ class World {
 
   turn() {
     var acted = [];
-    console.log(this.grid);
+    // console.log(this.grid);
     // this will be the tricky one to change to arrow:
     this.grid.forEach(function(critter, vector) {
       if (critter.act && acted.indexOf(critter) == -1) {
