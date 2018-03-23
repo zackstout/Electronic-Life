@@ -57,9 +57,43 @@ var world = new World(plan, {
   "o": BouncingCritter
 });
 
-console.log(world.toString());
+// Ok, seems to work:
+var world2 = new LifeWorld(plan, {
+  "#": Wall,
+  "o": BouncingCritter
+});
+
+
+
+
+var valley = new LifeWorld(
+  ["############################",
+   "#####                 ######",
+   "##   ***                **##",
+   "#   *##**         **  O  *##",
+   "#    ***     O    ##**    *#",
+   "#       O         ##***    #",
+   "#                 ##**     #",
+   "#   O       #*             #",
+   "#*          #**       O    #",
+   "#***        ##**    O    **#",
+   "##****     ###***       *###",
+   "############################"],
+  {"#": Wall,
+   "O": PlantEater,
+   "*": Plant}
+);
+
+
+
+// console.log(valley.toString());
+// valley.turn();
+// console.log(valley.toString());
+
+// console.log(world2.toString());
+// console.log(world.toString());
 var arr = world.toString().split('\n');
-console.log(arr);
+// console.log(arr);
 
 //
 // var body = document.getElementsByTagName('body')[0];
@@ -71,7 +105,10 @@ $(document).ready(function() {
 
   var body = $('body');
 
-  plan.forEach((str) => {
+  // draw initial world:
+  valley.toString().split('\n').forEach((str) => {
+  // plan.forEach((str) => {
+
     // Whitespace won't show up if we do this:
     // body.append('<p>' + str + '</p>');
     var output = '';
@@ -86,26 +123,23 @@ $(document).ready(function() {
     body.append('<p>' + output + '</p>');
   });
 
-  setInterval(moveWorld, 1000);
+  setInterval(moveWorld, 300);
 
-  // for (var i = 0; i < 5; i++) {
-  //   world.turn();
-  //   // console.log(world.toString());
-  // }
 });
-
-// var worldArray = world.toString();
 
 
 function moveWorld() {
-  world.turn();
+  valley.turn();
+  // world.turn();
   // should just make global:
   var body = $('body');
 
   // Hmm i wonder why .innerHTML didn't work...OH Because it's a jquery element!
   body.empty();
 
-  var arr = world.toString().split('\n');
+  // var arr = world.toString().split('\n');
+  var arr = valley.toString().split('\n');
+
 
   arr.forEach((str) => {
     // Whitespace won't show up if we do this:
@@ -113,21 +147,18 @@ function moveWorld() {
     var output = '';
     for (var i=0; i < str.length; i++) {
       if (str[i] == ' ') {
-        // console.log('what');
         output += '-';
       }
       output += str[i];
     }
 
     body.append('<p>' + output + '</p>');
-
-  // console.log(world.toString());
-
   });
-
 
 }
 
+
+//reason why classes aren't hoisted: so as not to mess up "extends"
 
 
 
