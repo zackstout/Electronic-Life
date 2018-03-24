@@ -1,8 +1,10 @@
 
 // Next steps:
-// - run it 1000 times to see how often predators/prey die out first.
+// - run it 1000 times to see how often herbivores/plants die out first.
 // - add more species with more complex rules.
 // - see how long it takes, whether that correlates to the winner.
+// - let it choose random number of herbivores to start, random number of plants:
+// - change regen rate of plants.
 
 var plan = ["############################",
             "#      #    #      o      ##",
@@ -110,10 +112,10 @@ $(document).ready(function() {
       output += str[i];
     }
 
-    body.append('<p>' + output + '</p>');
+    body.append('<p>&emsp;&emsp;&emsp;&emsp;' + output + '</p>');
   });
 
-  interv = setInterval(moveWorld, 2);
+  interv = setInterval(moveWorld, 120);
 
 });
 
@@ -207,7 +209,7 @@ function moveWorld() {
     }
 
     // Speed it up by getting rid of DOM...Hmm doesn't seemt o speed it up:
-    body.append('<p>' + output + '</p>');
+    body.append('<p>&emsp;&emsp;&emsp;&emsp;' + output + '</p>');
   });
 
 }
