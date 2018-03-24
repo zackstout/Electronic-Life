@@ -148,7 +148,7 @@ function moveWorld() {
       // console.log('we did it hoss');
 
       // yeah this is ugly but appears to be working now we've added extra catches:
-      var bool = (oldArr[5].indexOf('*') > -1) || (oldArr[11].indexOf('*') > -1) || (oldArr[8].indexOf('*') > -1);
+      var bool = (oldArr[1].indexOf('*') > -1) || (oldArr[2].indexOf('*') > -1) || (oldArr[3].indexOf('*') > -1) || (oldArr[4].indexOf('*') > -1) || (oldArr[5].indexOf('*') > -1) || (oldArr[6].indexOf('*') > -1) || (oldArr[7].indexOf('*') > -1) || (oldArr[8].indexOf('*') > -1) || (oldArr[9].indexOf('*') > -1) || (oldArr[10].indexOf('*') > -1) || (oldArr[11].indexOf('*') > -1);
       // console.log(bool);
 
       var winner = bool ? 'plants' : 'herbivores';
