@@ -1,10 +1,12 @@
 
-
 var interv;
 var count = 0;
 
 var plantWins = 0;
 var herbivoreWins = 0;
+
+var body;
+var arr;
 
 var plan = ["############################",
             "#      #    #      o      ##",
@@ -20,7 +22,6 @@ var plan = ["############################",
             "############################"];
 // console.log(plan);
 
-
 var lifePlan = ["############################",
                 "#####                 ######",
                 "##   ***                **##",
@@ -33,6 +34,25 @@ var lifePlan = ["############################",
                 "#***        ##**    O    **#",
                 "##****     ###***       *###",
                 "############################"];
+
+var tigerWorld =  ["####################################################",
+                   "#                 ####         ****              ###",
+                   "#   *  @  ##                 ########       OO    ##",
+                   "#   *    ##        O O                 ****       *#",
+                   "#       ##*                        ##########     *#",
+                   "#      ##***  *         ****                     **#",
+                   "#* **  #  *  ***      #########                  **#",
+                   "#* **  #      *               #   *              **#",
+                   "#     ##              #   O   #  ***          ######",
+                   "#*            @       #       #   *        O  #    #",
+                   "#*                    #  ######                 ** #",
+                   "###          ****          ***                  ** #",
+                   "#       O                        @         O       #",
+                   "#   *     ##  ##  ##  ##               ###      *  #",
+                   "#   **         #              *       #####  O     #",
+                   "##  **  O   O  #  #    ***  ***        ###      ** #",
+                   "###               #   *****                    ****#",
+                   "####################################################"];
 
 // Interesting that classes aren't hoisted, so this has to go below:
 var directions = {
@@ -72,3 +92,25 @@ function charFromElement(el) {
 }
 
 function Wall() {}
+
+function drawWorld(arr) {
+  arr.forEach((str) => {
+    // Whitespace won't show up if we do this:
+    // body.append('<p>' + str + '</p>');
+    var output = '';
+    for (var i=0; i < str.length; i++) {
+      if (str[i] == ' ') {
+        output += '-';
+      }
+      output += str[i];
+    }
+
+    // Speed it up by getting rid of DOM...Hmm doesn't seemt o speed it up:
+    body.append('<p>&emsp;&emsp;&emsp;&emsp;' + output + '</p>');
+  });
+}
+
+function increment(x) {
+  x++;
+  return x;
+}
