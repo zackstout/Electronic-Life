@@ -1,4 +1,9 @@
 
+// Next steps:
+// - run it 1000 times to see how often predators/prey die out first.
+// - add more species with more complex rules.
+//
+
 var plan = ["############################",
             "#      #    #      o      ##",
             "#                          #",
@@ -123,13 +128,17 @@ $(document).ready(function() {
     body.append('<p>' + output + '</p>');
   });
 
-  setInterval(moveWorld, 300);
+  setInterval(moveWorld, 20);
 
 });
 
+var count = 0;
 
 function moveWorld() {
+  var oldArr = valley.toString().split('\n');
+  // console.log(oldArr);
   valley.turn();
+  // console.log(oldArr);
   // world.turn();
   // should just make global:
   var body = $('body');
@@ -140,6 +149,45 @@ function moveWorld() {
   // var arr = world.toString().split('\n');
   var arr = valley.toString().split('\n');
 
+  oldArr.forEach(function(line, ind) {
+    if (line != arr[ind]) {
+      return;
+    } else {
+      // Ok, looks like what we care about is if we get 13 'elses' in a row before a 'hi':
+      // console.log('else');
+      count ++;
+    }
+    // console.log('hi');
+
+    // INTERESTING: it works! And not as I expected if the plants out-survive the herbivores: will tell us we're done before they've filled whole grid.
+    if (count == 13) {
+      console.log('we did it hoss');
+    }
+
+    if (ind == oldArr.length - 1) {
+      count = 0;
+      // console.log('hi');
+    }
+
+  });
+
+  // count ++;
+
+  // Whoa, this makes it suuuuper buggy -- the inefficiency?:
+  // for (var i=0; i < oldArr.length; i++) {
+  //   if (oldArr[i] != arr[i]) {
+  //     return;
+  //   }
+  //
+  //   if (i == oldArr.length) {
+  //     console.log('all done hoss');
+  //   }
+  // }
+
+
+  // if (oldArr == arr) {
+  //   console.log('all done hoss');
+  // }
 
   arr.forEach((str) => {
     // Whitespace won't show up if we do this:

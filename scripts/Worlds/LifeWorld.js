@@ -32,7 +32,8 @@ actionTypes.eat = function(critter, vector, action) {
 };
 
 actionTypes.reproduce = function(critter, vector, action) {
-  var baby = elementFromChar(this.legend,
+  // INTERESTING, had to change to elem instead of element, as i defined it -- but it worked for a while. I guess nothing tried to reproduce until then.
+  var baby = elemFromChar(this.legend,
                              critter.originChar);
   var dest = this.checkDestination(action, vector);
   if (dest == null ||

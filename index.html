@@ -4,19 +4,19 @@
     <meta charset="utf-8">
     <title>E-Life</title>
 
-    <script src="jquery.js" charset="utf-8"></script>
+    <script src="vendors/jquery.js" charset="utf-8"></script>
 
     <!-- Nice, it appears order doesn't matter, as long as they're all above client.js: -->
-    <script src="Vector.js" charset="utf-8"></script>
-    <script src="BouncingCritter.js" charset="utf-8"></script>
-    <script src="World.js" charset="utf-8"></script>
-    <script src="View.js" charset="utf-8"></script>
-    <script src="Grid.js" charset="utf-8"></script>
+    <script src="scripts/Basics/Vector.js" charset="utf-8"></script>
+    <script src="scripts/Creatures/BouncingCritter.js" charset="utf-8"></script>
+    <script src="scripts/Worlds/World.js" charset="utf-8"></script>
+    <script src="scripts/Basics/View.js" charset="utf-8"></script>
+    <script src="scripts/Basics/Grid.js" charset="utf-8"></script>
 
-    <script src="Plant.js" charset="utf-8"></script>
-    <script src="PlantEater.js" charset="utf-8"></script>
+    <script src="scripts/Creatures/Plant.js" charset="utf-8"></script>
+    <script src="scripts/Creatures/PlantEater.js" charset="utf-8"></script>
     <!-- I wonder whether order matters for this one, the derived class: -->
-    <script src="LifeWorld.js" charset="utf-8"></script>
+    <script src="scripts/Worlds/LifeWorld.js" charset="utf-8"></script>
   </head>
   <body>
 
@@ -25,7 +25,7 @@
     </div>
 
     <!-- Solution to problem with document.getElementById was we need script down here: -->
-    <script src="client.js" charset="utf-8"></script>
+    <script src="scripts/client.js" charset="utf-8"></script>
 
   </body>
 </html>
