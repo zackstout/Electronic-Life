@@ -38,7 +38,8 @@ actionTypes.reproduce = function(critter, vector, action) {
   var dest = this.checkDestination(action, vector);
   if (dest == null ||
     // requires double the child's energy to produce it:
-      critter.energy <= 2 * baby.energy ||
+    // changing to 2.5 seems to roughly even the scales
+      critter.energy <= 2.5 * baby.energy ||
       this.grid.get(dest) != null)
     return false;
   critter.energy -= 2 * baby.energy;
@@ -53,6 +54,7 @@ class LifeWorld extends World {
     // console.log(actionTypes);
   }
 
+  // Overwriting:
   letAct(critter, vector) {
     var action = critter.act(new View(this, vector));
     var handled = action && action.type in actionTypes && actionTypes[action.type].call(this, critter, vector, action);

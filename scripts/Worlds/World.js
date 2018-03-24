@@ -1,14 +1,12 @@
 
 class World {
   constructor(map, legend) {
-    // console.log(map);
     var grid = new Grid(map[0].length, map.length);
     this.grid = grid;
     this.legend = legend;
 
     // There's actually good reason we don't use this.grid. Could use var self = this as a workaround, but ES6 fixes it. .bind() is another workaround. Finally, can use an optional second context parameter for map and forEach:
     map.forEach((line, y) => {
-      // console.log(y);
       for (var x=0; x < line.length; x++) {
         var vector = new Vector(x, y);
         grid.set(vector, elemFromChar(legend, line[x]));
@@ -22,6 +20,7 @@ class World {
     for (var y=0; y < this.grid.h; y++) {
       for (var x=0; x < this.grid.w; x++) {
         var element = this.grid.get(new Vector(x, y));
+        // Get character living at that grid-square:
         output += charFromElement(element);
       }
       output += "\n";
@@ -31,14 +30,21 @@ class World {
 
   turn() {
     var acted = [];
-    // console.log(this.grid);
-    // this will be the tricky one to change to arrow:
-    this.grid.forEach(function(critter, vector) {
+    // *** Using lexical binding of "this" with arrow functions to avoid the binding problem:
+
+    // this.grid.forEach(function(critter, vector) {
+    //   if (critter.act && acted.indexOf(critter) == -1) {
+    //     acted.push(critter);
+    //     this.letAct(critter, vector);
+    //   }
+    // }, this);
+
+    this.grid.forEach((critter, vector) => {
       if (critter.act && acted.indexOf(critter) == -1) {
         acted.push(critter);
         this.letAct(critter, vector);
       }
-    }, this);
+    });
   }
 
   // These two functions *aren't* part of external interface of object; they should only be accessed privately.
@@ -57,7 +63,7 @@ class World {
   }
 
   checkDestination(action, vector) {
-    // is this built in?
+    // is this built in? Yes, method on Objects.
     if (directions.hasOwnProperty(action.direction)) {
       var dest = vector.plus(directions[action.direction]);
       if (this.grid.isInside(dest)) {

@@ -8,92 +8,16 @@
 // - Map each population, for each iteration. two graphs overlaid against one time axis.
 //
 
-
-
-
-var plan = ["############################",
-            "#      #    #      o      ##",
-            "#                          #",
-            "#          #####           #",
-            "##         #   #    ##     #",
-            "###           ##     #     #",
-            "#           ###      #     #",
-            "#   ####                   #",
-            "#   ##       o             #",
-            "# o  #         o       ### #",
-            "#    #                     #",
-            "############################"];
-// console.log(plan);
-
-// Interesting that classes aren't hoisted, so this has to go below:
-var directions = {
-  "n":  new Vector( 0, -1),
-  "ne": new Vector( 1, -1),
-  "e":  new Vector( 1,  0),
-  "se": new Vector( 1,  1),
-  "s":  new Vector( 0,  1),
-  "sw": new Vector(-1,  1),
-  "w":  new Vector(-1,  0),
-  "nw": new Vector(-1, -1)
-};
-
-function randomElement(array) {
-  return array[Math.floor(Math.random() * array.length)];
-}
-
-// couldn't we use Object.keys? He answers: no guarantee about order.
-var directionNames = "n ne e se s sw w nw".split(" ");
-
-// It's interesting that these are hoisted into *all the other class modules*:
-function elemFromChar(legend, ch) {
-  if (ch == " ") {
-    return null;
-  }
-  var element = new legend[ch]();
-  element.originChar = ch;
-  return element;
-}
-
-function charFromElement(el) {
-  if (el == null) {
-    return " ";
-  } else {
-    return el.originChar;
-  }
-}
-
-function Wall() {}
-
 var world = new World(plan, {
   "#": Wall,
   "o": BouncingCritter
 });
 
-// Ok, seems to work:
-// var world2 = new LifeWorld(plan, {
-//   "#": Wall,
-//   "o": BouncingCritter
-// });
-
-
-var valley = new LifeWorld(
-  ["############################",
-   "#####                 ######",
-   "##   ***                **##",
-   "#   *##**         **  O  *##",
-   "#    ***     O    ##**    *#",
-   "#       O         ##***    #",
-   "#                 ##**     #",
-   "#   O       #*             #",
-   "#*          #**       O    #",
-   "#***        ##**    O    **#",
-   "##****     ###***       *###",
-   "############################"],
-  {"#": Wall,
-   "O": PlantEater,
-   "*": Plant}
+var valley = new LifeWorld(lifePlan, {
+  "#": Wall,
+  "O": PlantEater,
+  "*": Plant}
 );
-
 
 var arr = world.toString().split('\n');
 
@@ -102,7 +26,7 @@ $(document).ready(function() {
 
   var body = $('body');
 
-  // draw initial world:
+  // Draw initial world (REFACTOR INTO OWN FUNCTION:):
   valley.toString().split('\n').forEach((str) => {
   // plan.forEach((str) => {
 
@@ -111,7 +35,6 @@ $(document).ready(function() {
     var output = '';
     for (var i=0; i < str.length; i++) {
       if (str[i] == ' ') {
-        // console.log('what');
         output += '-';
       }
       output += str[i];
@@ -120,23 +43,22 @@ $(document).ready(function() {
     body.append('<p>&emsp;&emsp;&emsp;&emsp;' + output + '</p>');
   });
 
+  // Animate world:
   interv = setInterval(moveWorld, 120);
 
 });
 
-var interv;
-var count = 0;
 
+// Animator function:
 function moveWorld() {
   var oldArr = valley.toString().split('\n');
   valley.turn();
-  // world.turn();
+
   // should just make global:
   var body = $('body');
 
   body.empty();
 
-  // var arr = world.toString().split('\n');
   var arr = valley.toString().split('\n');
 
   oldArr.forEach(function(line, ind) {
@@ -152,19 +74,10 @@ function moveWorld() {
     if (count == 13) {
       // console.log('we did it hoss');
 
-
-      // WAIT NO SURE IF WORKIGN -- MAYBE NEED TO LOOK AT ARR
-
-
-
-      // BIG CHANGE: WE CHANGE THESE FROM oldArr to arr:
-      
       // yeah this is ugly but appears to be working now we've added extra catches:
       var bool = (arr[1].indexOf('*') > -1) || (arr[2].indexOf('*') > -1) || (arr[3].indexOf('*') > -1) || (arr[4].indexOf('*') > -1) || (arr[5].indexOf('*') > -1) || (arr[6].indexOf('*') > -1) || (arr[7].indexOf('*') > -1) || (arr[8].indexOf('*') > -1) || (arr[9].indexOf('*') > -1) || (arr[10].indexOf('*') > -1) || (arr[11].indexOf('*') > -1);
-      // console.log(bool);
 
       var winner = bool ? 'plants' : 'herbivores';
-      // console.log(winner);
 
       if (bool) {
         plantWins++;
@@ -174,41 +87,25 @@ function moveWorld() {
 
       console.log("Plants: ", plantWins, " and Herbivores: ", herbivoreWins);
 
-      // console.log(plantWins);
       clearInterval(interv);
 
-
-      // reset valley to starting position:
-      valley = new LifeWorld(
-        ["############################",
-         "#####                 ######",
-         "##   ***                **##",
-         "#   *##**         **  O  *##",
-         "#    ***     O    ##**    *#",
-         "#       O         ##***    #",
-         "#                 ##**     #",
-         "#   O       #*             #",
-         "#*          #**       O    #",
-         "#***        ##**    O    **#",
-         "##****     ###***       *###",
-         "############################"],
-        {"#": Wall,
-         "O": PlantEater,
-         "*": Plant}
+      // Reset valley to initial state:
+      valley = new LifeWorld(lifePlan, {
+        "#": Wall,
+        "O": PlantEater,
+        "*": Plant}
       );
 
-
       interv = setInterval(moveWorld, 20);
-      return(winner);
     }
 
     if (ind == oldArr.length - 1) {
       count = 0;
-      // console.log('hi');
     }
 
   });
 
+  // REFACTOR:
   arr.forEach((str) => {
     // Whitespace won't show up if we do this:
     // body.append('<p>' + str + '</p>');
@@ -224,11 +121,8 @@ function moveWorld() {
     body.append('<p>&emsp;&emsp;&emsp;&emsp;' + output + '</p>');
   });
 
-}
+} // end moveWorld
 
-
-var plantWins = 0;
-var herbivoreWins = 0;
 
 //reason why classes aren't hoisted: so as not to mess up "extends"
 

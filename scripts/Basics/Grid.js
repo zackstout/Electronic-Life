@@ -15,13 +15,7 @@ class Grid {
   }
 
   set(v, val) {
-    // ok we're getting proper values here:
-    // console.log(val);
     this.space[v.x + this.w * v.y] = val;
-    // console.log(this.space);
-
-    // Here's an issue: we're only getting cases where x ==y!:
-    // console.log(v);
   }
 
   // ahhhh, we need this for World.turn() to work:
