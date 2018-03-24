@@ -14,4 +14,6 @@ With a few more checkers, we have 20: 32, 24: 42, 28: 48, 31: 57.
 
 (Hmm this is the opposite effect than I anticipated:)
 (Well I suppose it's possible they both converge toward same amount. Will need to automate this.)
-With all catcher, we have 9: 20, 13: 34, 20: 52, 25: 59, 28: 67, 35: 75
+With all catcher, we have 9: 20, 13: 34, 20: 52, 25: 59, 28: 67, 35: 75, 39: 89
+
+Ok now looking at the correct array: 10: 15, 15: 21, 21: 23, 25: 31, 30: 45, 37: 56, 42: 65, 47: 70, 54: 75, 62: 84, 70: 96. So we need to find the limit to which each of these series is converging.

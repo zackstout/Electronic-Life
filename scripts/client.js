@@ -1,10 +1,15 @@
 
 // Next steps:
 // - run it 1000 times to see how often herbivores/plants die out first.
-// - add more species with more complex rules.
-// - see how long it takes, whether that correlates to the winner.
+// - add more species with more complex rules (e.g. Predators).
+// - see how long the simulation/iteration takes, whether that correlates to the winner.
 // - let it choose random number of herbivores to start, random number of plants:
 // - change regen rate of plants.
+// - Map each population, for each iteration. two graphs overlaid against one time axis.
+//
+
+
+
 
 var plan = ["############################",
             "#      #    #      o      ##",
@@ -147,8 +152,15 @@ function moveWorld() {
     if (count == 13) {
       // console.log('we did it hoss');
 
+
+      // WAIT NO SURE IF WORKIGN -- MAYBE NEED TO LOOK AT ARR
+
+
+
+      // BIG CHANGE: WE CHANGE THESE FROM oldArr to arr:
+      
       // yeah this is ugly but appears to be working now we've added extra catches:
-      var bool = (oldArr[1].indexOf('*') > -1) || (oldArr[2].indexOf('*') > -1) || (oldArr[3].indexOf('*') > -1) || (oldArr[4].indexOf('*') > -1) || (oldArr[5].indexOf('*') > -1) || (oldArr[6].indexOf('*') > -1) || (oldArr[7].indexOf('*') > -1) || (oldArr[8].indexOf('*') > -1) || (oldArr[9].indexOf('*') > -1) || (oldArr[10].indexOf('*') > -1) || (oldArr[11].indexOf('*') > -1);
+      var bool = (arr[1].indexOf('*') > -1) || (arr[2].indexOf('*') > -1) || (arr[3].indexOf('*') > -1) || (arr[4].indexOf('*') > -1) || (arr[5].indexOf('*') > -1) || (arr[6].indexOf('*') > -1) || (arr[7].indexOf('*') > -1) || (arr[8].indexOf('*') > -1) || (arr[9].indexOf('*') > -1) || (arr[10].indexOf('*') > -1) || (arr[11].indexOf('*') > -1);
       // console.log(bool);
 
       var winner = bool ? 'plants' : 'herbivores';
