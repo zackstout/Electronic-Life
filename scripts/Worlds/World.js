@@ -1,7 +1,7 @@
 
 class World {
   constructor(map, legend) {
-    console.log(map);
+    // console.log(map);
     var grid = new Grid(map[0].length, map.length);
     this.grid = grid;
     this.legend = legend;

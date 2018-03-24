@@ -2,7 +2,7 @@
 // Next steps:
 // - run it 1000 times to see how often predators/prey die out first.
 // - add more species with more complex rules.
-//
+// - see how long it takes, whether that correlates to the winner.
 
 var plan = ["############################",
             "#      #    #      o      ##",
@@ -63,12 +63,10 @@ var world = new World(plan, {
 });
 
 // Ok, seems to work:
-var world2 = new LifeWorld(plan, {
-  "#": Wall,
-  "o": BouncingCritter
-});
-
-
+// var world2 = new LifeWorld(plan, {
+//   "#": Wall,
+//   "o": BouncingCritter
+// });
 
 
 var valley = new LifeWorld(
@@ -90,20 +88,7 @@ var valley = new LifeWorld(
 );
 
 
-
-// console.log(valley.toString());
-// valley.turn();
-// console.log(valley.toString());
-
-// console.log(world2.toString());
-// console.log(world.toString());
 var arr = world.toString().split('\n');
-// console.log(arr);
-
-//
-// var body = document.getElementsByTagName('body')[0];
-// console.log(body);
-// body.innerHTML = '<ul><li>hi</li></ul>';
 
 // Bringing in jQuery for animation:
 $(document).ready(function() {
@@ -128,22 +113,20 @@ $(document).ready(function() {
     body.append('<p>' + output + '</p>');
   });
 
-  setInterval(moveWorld, 20);
+  interv = setInterval(moveWorld, 2);
 
 });
 
+var interv;
 var count = 0;
 
 function moveWorld() {
   var oldArr = valley.toString().split('\n');
-  // console.log(oldArr);
   valley.turn();
-  // console.log(oldArr);
   // world.turn();
   // should just make global:
   var body = $('body');
 
-  // Hmm i wonder why .innerHTML didn't work...OH Because it's a jquery element!
   body.empty();
 
   // var arr = world.toString().split('\n');
@@ -157,11 +140,52 @@ function moveWorld() {
       // console.log('else');
       count ++;
     }
-    // console.log('hi');
 
     // INTERESTING: it works! And not as I expected if the plants out-survive the herbivores: will tell us we're done before they've filled whole grid.
     if (count == 13) {
-      console.log('we did it hoss');
+      // console.log('we did it hoss');
+
+      // yeah this is ugly but appears to be working now we've added extra catches:
+      var bool = (oldArr[5].indexOf('*') > -1) || (oldArr[11].indexOf('*') > -1) || (oldArr[8].indexOf('*') > -1);
+      // console.log(bool);
+
+      var winner = bool ? 'plants' : 'herbivores';
+      // console.log(winner);
+
+      if (bool) {
+        plantWins++;
+      } else {
+        herbivoreWins++;
+      }
+
+      console.log("Plants: ", plantWins, " and Herbivores: ", herbivoreWins);
+
+      // console.log(plantWins);
+      clearInterval(interv);
+
+
+      // reset valley to starting position:
+      valley = new LifeWorld(
+        ["############################",
+         "#####                 ######",
+         "##   ***                **##",
+         "#   *##**         **  O  *##",
+         "#    ***     O    ##**    *#",
+         "#       O         ##***    #",
+         "#                 ##**     #",
+         "#   O       #*             #",
+         "#*          #**       O    #",
+         "#***        ##**    O    **#",
+         "##****     ###***       *###",
+         "############################"],
+        {"#": Wall,
+         "O": PlantEater,
+         "*": Plant}
+      );
+
+
+      interv = setInterval(moveWorld, 20);
+      return(winner);
     }
 
     if (ind == oldArr.length - 1) {
@@ -170,24 +194,6 @@ function moveWorld() {
     }
 
   });
-
-  // count ++;
-
-  // Whoa, this makes it suuuuper buggy -- the inefficiency?:
-  // for (var i=0; i < oldArr.length; i++) {
-  //   if (oldArr[i] != arr[i]) {
-  //     return;
-  //   }
-  //
-  //   if (i == oldArr.length) {
-  //     console.log('all done hoss');
-  //   }
-  // }
-
-
-  // if (oldArr == arr) {
-  //   console.log('all done hoss');
-  // }
 
   arr.forEach((str) => {
     // Whitespace won't show up if we do this:
@@ -200,11 +206,15 @@ function moveWorld() {
       output += str[i];
     }
 
+    // Speed it up by getting rid of DOM...Hmm doesn't seemt o speed it up:
     body.append('<p>' + output + '</p>');
   });
 
 }
 
+
+var plantWins = 0;
+var herbivoreWins = 0;
 
 //reason why classes aren't hoisted: so as not to mess up "extends"
 
