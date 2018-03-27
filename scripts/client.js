@@ -6,7 +6,7 @@
 // - let it choose random number of herbivores to start, random number of plants:
 // - change regen rate of plants.
 // - Map each population, for each iteration. two graphs overlaid against one time axis.
-//
+// - ***Oh shit I just had that idea and thought it was new!!!
 
 var world = new World(plan, {
   "#": Wall,
