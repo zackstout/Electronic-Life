@@ -9,6 +9,11 @@ Plants vs Herbivores:
 
 <img src="https://media.giphy.com/media/U7LNVTF1tcsVJjkjBx/giphy.gif" width="600px">
 
+Real-time graph of populations of plants and herbivores:
+
+![screen shot 2018-04-18 at 12 36 13 am](https://user-images.githubusercontent.com/29472568/38913506-a9eef0fe-42a0-11e8-9d31-04fa31b9b569.png)
+
+
 ## Next Steps:
 - [ ] Automate the tweaking of parameters to get most stable ecosystems. (Stretch: use machine learning).
 - [ ] Map the populations in real-time to observe predator-prey cycles.
