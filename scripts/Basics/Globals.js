@@ -110,7 +110,29 @@ function drawWorld(arr) {
   });
 }
 
+// what are we using this for? Checking whether we're at the last world of the world array without having altered anything?
+// Or is it ever even called......?
 function increment(x) {
   x++;
   return x;
+}
+
+function getPopulationCount(arr) {
+  var res = {
+    tigers: 0,
+    herbivores: 0,
+    plants: 0
+  };
+
+  // console.log(arr);
+
+  arr.forEach(el => {
+    for (let i=0; i < el.length; i++) {
+      if (el[i] == "*") res.plants++;
+      else if (el[i] == "@") res.tigers++;
+      else if (el[i] == 'O') res.herbivores++;
+    }
+  });
+
+  return res;
 }

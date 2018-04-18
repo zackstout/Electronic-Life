@@ -33,6 +33,7 @@ $(document).ready(function() {
   arr = world.toString().split('\n');
   // for plant/herbivore world:
   var tigersArray = tigers.toString().split('\n');
+  // console.log(tigersArray);
 
   // Draw initial state of world:
   drawWorld(tigersArray);
@@ -49,6 +50,13 @@ function moveWorld() {
   tigers.turn();
   var arr = tigers.toString().split('\n');
 
+
+  var pop = getPopulationCount(arr);
+  console.log(pop);
+
+
+
+  // console.log(arr);
   // Check if the simulation is finished:
   oldArr.forEach(function(line, ind) {
     if (line != arr[ind]) {
@@ -86,6 +94,7 @@ function moveWorld() {
         "*": Plant}
       );
 
+      // Go 6 times faster for each iteration after the first one:
       interv = setInterval(moveWorld, 20);
     }
 
@@ -98,7 +107,7 @@ function moveWorld() {
   drawWorld(arr);
 } // end moveWorld
 
-//reason why classes aren't hoisted: so as not to mess up "extends"
+// Reason why classes aren't hoisted: so as not to mess up "extends"
 
 
 
