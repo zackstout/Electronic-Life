@@ -8,6 +8,8 @@
 // - Map each population, for each iteration. two graphs overlaid against one time axis.
 // - ***Oh shit I just had that idea and thought it was new!!!
 
+
+
 var world = new World(plan, {
   "#": Wall,
   "o": BouncingCritter
@@ -40,11 +42,30 @@ $(document).ready(function() {
 
   // Animate world:
   interv = setInterval(moveWorld, 120);
+
+  canvas = document.getElementById("graph");
+  ctx = canvas.getContext("2d");
+
+  // Draw axes:
+  ctx.moveTo(20, 280);
+  ctx.lineTo(700, 280);
+  ctx.stroke();
+
+  ctx.moveTo(20, 0);
+  ctx.lineTo(20, 280);
+  ctx.stroke();
 });
+
+// Not sure why not working?
+// function setup() {
+//
+//     createCanvas(700, 300);
+//     background(200);
+// }
 
 // Animator function:
 function moveWorld() {
-  body.empty();
+  $('#world').empty();
 
   var oldArr = tigers.toString().split('\n');
   tigers.turn();
@@ -53,6 +74,8 @@ function moveWorld() {
 
   var pop = getPopulationCount(arr);
   console.log(pop);
+
+  graph(pop);
 
 
 

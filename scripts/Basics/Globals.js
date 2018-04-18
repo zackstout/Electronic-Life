@@ -8,6 +8,10 @@ var herbivoreWins = 0;
 var body;
 var arr;
 
+var canvas;
+var ctx;
+
+
 var plan = ["############################",
             "#      #    #      o      ##",
             "#                          #",
@@ -106,7 +110,7 @@ function drawWorld(arr) {
     }
 
     // Speed it up by getting rid of DOM...Hmm doesn't seemt o speed it up:
-    body.append('<p>&emsp;&emsp;&emsp;&emsp;' + output + '</p>');
+    $('#world').append('<p>&emsp;&emsp;&emsp;&emsp;' + output + '</p>');
   });
 }
 
@@ -116,6 +120,10 @@ function increment(x) {
   x++;
   return x;
 }
+
+
+
+
 
 function getPopulationCount(arr) {
   var res = {
@@ -135,4 +143,21 @@ function getPopulationCount(arr) {
   });
 
   return res;
+}
+
+
+
+function graph(pop) {
+  ctx.clearRect(0, 0, 700, 300);
+  // plant population:
+  ctx.beginPath();
+  ctx.arc(350, pop.plants / 3, 5, 0, 2*Math.PI);
+  ctx.fillStyle = 'green';
+  ctx.fill();
+
+  // herbivore population:
+  ctx.beginPath();
+  ctx.arc(350, pop.herbivores * 10, 5, 0, 2*Math.PI);
+  ctx.fillStyle = 'lightBlue';
+  ctx.fill();
 }
