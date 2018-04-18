@@ -11,6 +11,9 @@ var arr;
 var canvas;
 var ctx;
 
+var plantDots = [];
+var herbivoreDots = [];
+
 
 var plan = ["############################",
             "#      #    #      o      ##",
@@ -124,6 +127,7 @@ function increment(x) {
 
 
 
+// Adding dynamic population graphs:
 
 function getPopulationCount(arr) {
   var res = {
@@ -131,8 +135,6 @@ function getPopulationCount(arr) {
     herbivores: 0,
     plants: 0
   };
-
-  // console.log(arr);
 
   arr.forEach(el => {
     for (let i=0; i < el.length; i++) {
@@ -147,17 +149,52 @@ function getPopulationCount(arr) {
 
 
 
+
+class Dot {
+  constructor(y, s) {
+    this.x = 350;
+    this.y = y;
+    this.species = s;
+  }
+
+  moveLeft() {
+    this.x -= 5;
+  }
+
+  draw() {
+    ctx.beginPath();
+    // we don't need x, just assume it's 350:
+    ctx.arc(this.x, this.y, 5, 0, 2*Math.PI);
+    ctx.fillStyle = this.species == 'plant' ? 'green' : 'lightBlue';
+    ctx.fill();
+  }
+}
+
+
+
+
 function graph(pop) {
   ctx.clearRect(0, 0, 700, 300);
-  // plant population:
-  ctx.beginPath();
-  ctx.arc(350, pop.plants / 3, 5, 0, 2*Math.PI);
-  ctx.fillStyle = 'green';
-  ctx.fill();
+  // Draw axes:
+  ctx.moveTo(20, 280);
+  ctx.lineTo(700, 280);
+  ctx.stroke();
 
-  // herbivore population:
-  ctx.beginPath();
-  ctx.arc(350, pop.herbivores * 10, 5, 0, 2*Math.PI);
-  ctx.fillStyle = 'lightBlue';
-  ctx.fill();
+  ctx.moveTo(20, 0);
+  ctx.lineTo(20, 280);
+  ctx.stroke();
+
+  var plant = new Dot(pop.plants/3, 'plant');
+  plantDots.push(plant);
+  plantDots.forEach(p => {
+    p.moveLeft();
+    p.draw();
+  });
+
+  var herbivore = new Dot(pop.herbivores*10, 'herbivore');
+  herbivoreDots.push(herbivore);
+  herbivoreDots.forEach(h => {
+    h.moveLeft();
+    h.draw();
+  });
 }

@@ -46,14 +46,13 @@ $(document).ready(function() {
   canvas = document.getElementById("graph");
   ctx = canvas.getContext("2d");
 
-  // Draw axes:
-  ctx.moveTo(20, 280);
-  ctx.lineTo(700, 280);
-  ctx.stroke();
 
-  ctx.moveTo(20, 0);
-  ctx.lineTo(20, 280);
-  ctx.stroke();
+
+  // Draw dots:
+  plantDots.forEach(p => {
+    p.draw();
+  });
+
 });
 
 // Not sure why not working?
