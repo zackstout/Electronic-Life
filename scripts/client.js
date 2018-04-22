@@ -37,8 +37,11 @@ $(document).ready(function() {
   var tigersArray = tigers.toString().split('\n');
   // console.log(tigersArray);
 
+  var lifeArray = valley.toString().split('\n');
+
   // Draw initial state of world:
-  drawWorld(tigersArray);
+  // drawWorld(tigersArray);
+  drawWorld(lifeArray);
 
   // Animate world:
   interv = setInterval(moveWorld, 120);
@@ -46,29 +49,22 @@ $(document).ready(function() {
   canvas = document.getElementById("graph");
   ctx = canvas.getContext("2d");
 
-
-
-  // Draw dots:
-  plantDots.forEach(p => {
-    p.draw();
-  });
-
 });
 
-// Not sure why not working?
-// function setup() {
-//
-//     createCanvas(700, 300);
-//     background(200);
-// }
+
+
 
 // Animator function:
 function moveWorld() {
   $('#world').empty();
 
-  var oldArr = tigers.toString().split('\n');
-  tigers.turn();
-  var arr = tigers.toString().split('\n');
+  // var oldArr = tigers.toString().split('\n');
+  // tigers.turn();
+  // var arr = tigers.toString().split('\n');
+
+  var oldArr = valley.toString().split('\n');
+  valley.turn();
+  var arr = valley.toString().split('\n');
 
 
   var pop = getPopulationCount(arr);
@@ -112,6 +108,12 @@ function moveWorld() {
       tigers = new LifeWorld(tigerWorld, {
         "#": Wall,
         "@": Tiger,
+        "O": PlantEater,
+        "*": Plant}
+      );
+
+      valley = new LifeWorld(lifePlan, {
+        "#": Wall,
         "O": PlantEater,
         "*": Plant}
       );

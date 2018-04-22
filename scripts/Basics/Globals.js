@@ -127,7 +127,7 @@ function increment(x) {
 
 
 
-// Adding dynamic population graphs:
+// Adding dynamic population graphs via the following 2 functions and the Dot class:
 
 function getPopulationCount(arr) {
   var res = {
@@ -149,30 +149,6 @@ function getPopulationCount(arr) {
 
 
 
-
-class Dot {
-  constructor(y, s) {
-    this.x = 350;
-    this.y = y;
-    this.species = s;
-  }
-
-  moveLeft() {
-    this.x -= 5;
-  }
-
-  draw() {
-    ctx.beginPath();
-    // we don't need x, just assume it's 350:
-    ctx.arc(this.x, this.y, 5, 0, 2*Math.PI);
-    ctx.fillStyle = this.species == 'plant' ? 'green' : 'lightBlue';
-    ctx.fill();
-  }
-}
-
-
-
-
 function graph(pop) {
   ctx.clearRect(0, 0, 700, 300);
   // Draw axes:
@@ -184,6 +160,7 @@ function graph(pop) {
   ctx.lineTo(20, 280);
   ctx.stroke();
 
+  // draw plant dots:
   var plant = new Dot(pop.plants/3, 'plant');
   plantDots.push(plant);
   plantDots.forEach(p => {
@@ -191,6 +168,7 @@ function graph(pop) {
     p.draw();
   });
 
+  // draw herbivore dots:
   var herbivore = new Dot(pop.herbivores*10, 'herbivore');
   herbivoreDots.push(herbivore);
   herbivoreDots.forEach(h => {
